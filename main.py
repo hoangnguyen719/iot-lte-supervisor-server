@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 import models
 from database import engine, SessionLocal
-from models import Song
+from models import Song, LteSignal
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -26,3 +26,7 @@ def read_root():
 @app.get('/songs/')
 def read_songs(db: Session = Depends(get_db)):
     return db.query(Song).all()
+
+@app.get('/lte/')
+def read_songs(db: Session = Depends(get_db)):
+    return db.query(LteSignal).all()
