@@ -2,13 +2,13 @@
 
 Team NEWBEES' work for JunctionX Hanoi 2023 Hackathon
 
-pip install -r requirements.txt
-
 Create a new virtual environment:
 python3 -m venv venv
 
 Activate it:
 source venv/bin/activate
+
+pip install -r requirements.txt
 
 Set up database:
 Install postgreSQL: https://www.postgresql.org/download/
