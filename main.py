@@ -48,7 +48,7 @@ def read_lte(db: Session = Depends(get_db)):
 @app.post('/post_signal/')
 def create_signal(signal: Signal, db: Session = Depends(get_db)):
     db_signal = models.LteSignal(
-        ts = signal.ts
+        ts = datetime.now()
         , pcellid = signal.pcellid
         , rsrq = signal.rsrq
         , rsrp = signal.rsrp
@@ -60,3 +60,7 @@ def create_signal(signal: Signal, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_signal)
     return db_signal
+
+@app.get('/get_last_signal/')
+def get_last_signal(signal: Signal):
+    return signal
