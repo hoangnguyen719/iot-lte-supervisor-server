@@ -16,7 +16,7 @@ if 'RDS_DB_NAME' in os.environ:
 else:
     DATABASE_URL = \
         'postgresql://{username}:{password}@{host}:{port}/{database}'.format(
-            username='fastapi-songs',
+            username='postgres',
             password='complexpassword123',
             host='localhost',
             port='5432',
