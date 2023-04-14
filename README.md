@@ -9,3 +9,21 @@ python3 -m venv venv
 
 Activate it:
 source venv/bin/activate
+
+Set up database:
+Install postgreSQL: https://www.postgresql.org/download/
+
+Start postgresql:
+sudo service postgresql start
+
+Set up user:
+sudo -u postgres createuser fastapi-songs --pwprompt
+
+Create test database:
+sudo -u postgres psql -c "create database fastapi;"
+
+init db:
+python3 init_db.py
+
+Run server:
+uvicorn main:app --reload

@@ -20,7 +20,7 @@ else:
             password='complexpassword123',
             host='localhost',
             port='5432',
-            database='fastapi-songs',
+            database='fastapi',
         )
 
 engine = create_engine(
