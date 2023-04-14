@@ -20,5 +20,5 @@ class LteSignal(Base):
     rsrq = Column(Integer, nullable=False)
     rsrp = Column(Integer, nullable=False)
     frequency_band = Column(Integer, nullable=False)
-    dlbw = Column(Integer, nullable=False)
-    ulbw = Column(Integer, nullable=False)
+    dlbw = Column(Integer, nullable=True)
+    ulbw = Column(Integer, nullable=True)

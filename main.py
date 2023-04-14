@@ -20,6 +20,9 @@ class Signal(BaseModel):
     dlbw: int
     ulbw: int
 
+    class Config:
+        orm_mode = True
+
 
 def get_db():
     db = SessionLocal()
@@ -43,5 +46,17 @@ def read_lte(db: Session = Depends(get_db)):
     return db.query(LteSignal).all()
 
 @app.post('/post_signal/')
-def create_signal(signal: Signal):
-    return signal
+def create_signal(signal: Signal, db: Session = Depends(get_db)):
+    db_signal = models.LteSignal(
+        ts = signal.ts
+        , pcellid = signal.pcellid
+        , rsrq = signal.rsrq
+        , rsrp = signal.rsrp
+        , frequency_band = signal.frequency_band
+        , dlbw = signal.dlbw
+        , ulbw = signal.ulbw
+    )
+    db.add(db_signal)
+    db.commit()
+    db.refresh(db_signal)
+    return db_signal
