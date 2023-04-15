@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import desc, select
 from datetime import datetime
 
 import models
@@ -37,6 +38,8 @@ def create_signal(signal: Signal, db: Session = Depends(get_db)):
     db_signal = models.LteSignal(
         ts = datetime.now()
         , pcellid = signal.pcellid
+        , mcc = signal.mcc
+        , mnc = signal.mnc
         , rsrq = signal.rsrq
         , rsrp = signal.rsrp
         , frequency_band = signal.frequency_band
@@ -50,12 +53,15 @@ def create_signal(signal: Signal, db: Session = Depends(get_db)):
 
 @app.get('/get_signals/')
 def get_signal(
-    pcellid: int | None = None
+    pcellid: str | None = None
     , signal_count: int = 1
     , db: Session = Depends(get_db)
     ):
-    query = (
-        db.query(LteSignal)
-        .order_by(desc(LteSignal.ts))
-        .limit(signal_count)
-    )
+    with db:
+        statement = select(LteSignal)
+        if pcellid:
+            statement = statement.where(LteSignal.pcellid == pcellid)
+        statement = statement.order_by(LteSignal.ts.desc()).limit(signal_count)
+        results = db.execute(statement)
+        results = results.all()
+    return results[0]["LteSignal"]
