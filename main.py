@@ -70,8 +70,17 @@ def post_signal(signal: Signal, db: Session = Depends(get_db)):
 
     return signal
 
+@app.get('/get_last_signal/')
+def get_last_signal(db: Session = Depends(get_db)):
+    with db:
+        statement = select(LteSignal)
+        statement = statement.order_by(LteSignal.ts.desc()).limit(1)
+        results = db.execute(statement)
+        results = results.all()
+    return results[0]["LteSignal"]
+
 @app.get('/get_signals/')
-def get_signal(
+def get_signals(
     scellid: str | None = None
     , signal_count: int = 1
     , db: Session = Depends(get_db)
