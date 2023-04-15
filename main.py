@@ -54,20 +54,27 @@ def get_last_cell_change(db: Session = Depends(get_db)):
     else:
         return None
 
-@app.get('/get_signals/')
-def get_signals(
+@app.get('/get_n_signals/')
+def get_n_signals(
     scellid: str | None = None
     , signal_count: int = 10
     , db: Session = Depends(get_db)
-    ):
-    return crud.get_signals(db=db, scellid=scellid, signal_count=signal_count)
+):
+    return crud.get_n_signals(db=db, scellid=scellid, signal_count=signal_count)
+
+@app.get('/get_1hr_signals/')
+def get_1hr_signals(
+    scellid: str | None = None
+    , db: Session = Depends(get_db)
+):
+    return crud.get_1h_signals(db=db, scellid=scellid)
 
 @app.post('/post_signal/')
 def post_signal(
     signal: Signal
     , db: Session = Depends(get_db)
     , current_dt: datetime | None = None
-    ):
+):
     if current_dt is None:
         current_dt = datetime.now()
     db_signal = crud.append_signal(signal, db, current_dt)
@@ -79,7 +86,7 @@ def update_current_frequency(
     freq: Frequency = 2
     , db: Session = Depends(get_db)
     , current_dt: datetime | None = None
-    ):
+):
     if current_dt is None:
         current_dt = datetime.now()
     return crud.update_current_frequency(freq=freq, db=db, dt=current_dt)

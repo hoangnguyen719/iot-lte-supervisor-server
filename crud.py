@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy import select
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import models, schemas, database
 
@@ -93,10 +93,11 @@ def update_cell(signal: schemas.Signal, db: Session, dt: datetime):
 
 def update_current_frequency(freq: schemas.Frequency, db: Session, dt: datetime):
     new_freq = freq.frequency
-    # truncate current_frequency
-    # append new data
     with db:
+        # Truncate current_frequency
         db.query(models.CurrentFrequency).delete()
+
+        # Append new data
         new_freq = models.CurrentFrequency(
             updated_at = dt
             , frequency = freq.frequency
@@ -106,11 +107,11 @@ def update_current_frequency(freq: schemas.Frequency, db: Session, dt: datetime)
         db.refresh(new_freq)
     return new_freq
 
-def get_signals(
+def get_n_signals(
     db: Session
     , signal_count: int
     , scellid: str | None = None
-    ):
+):
     with db:
         statement = select(models.LteSignal)
         if scellid:
@@ -118,4 +119,29 @@ def get_signals(
         statement = statement.order_by(models.LteSignal.ts.desc()).limit(signal_count)
         results = db.execute(statement)
         results = results.all()
-    return list(reversed([s["LteSignal"] for s in results]))
+    return format_signals(signals=results, ts_format=lambda x: x)
+
+def get_1h_signals(
+    db: Session
+    , scellid: str | None = None
+):
+    last_1hr = datetime.now() - timedelta(hours=1)
+    with db:
+        statement = select(models.LteSignal)
+        if scellid:
+            statement = statement.where(models.LteSignal.scellid == scellid)
+        statement = statement.where(models.LteSignal.ts >= last_1hr)
+        statement = statement.order_by(models.LteSignal.ts.desc())
+        results = db.execute(statement)
+        results = results.all()
+    return format_signals(signals=results, ts_format=lambda x: x.strftime('%H:%M:%S'))
+
+def format_signals(signals, ts_format=lambda x: x.strftime('%H')):
+    formated_results = {
+        'ts': [], 'rsrp_dbm': [], 'rsrq_dbm': []
+    }
+    for r in list(reversed([s["LteSignal"] for s in signals])):
+        formated_results['ts'].append(ts_format(r.ts))
+        formated_results['rsrp_dbm'].append(r.rsrp_dbm)
+        formated_results['rsrq_dbm'].append(r.rsrq_dbm )
+    return formated_results

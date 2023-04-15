@@ -36,7 +36,7 @@ uvicorn main:app --reload
 /get_last_signal/
 
 ### `GET` last `signal_count` LTE signals from S-Cell ID=`scellid`
-/get_last_signal/?scellid=`scellid`&signal_count=`scellid`
+/get_n_signals/?scellid=`scellid`&signal_count=`scellid`
 
 ### `GET` all LTE cells' info
 /cells/
