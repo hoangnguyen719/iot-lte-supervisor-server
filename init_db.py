@@ -1,22 +1,42 @@
-from datetime import date
+import argparse
+import sqlalchemy as sa
 
-import models
 from database import engine, SessionLocal
-from models import Song
+from tables import TABLES, TABL_NAMES
 
-models.Base.metadata.create_all(bind=engine)
+# Get keyword argument
+parser = argparse.ArgumentParser(description="Initiate tables in the database.")
+parser.add_argument(
+    '-d', '--data', choices=['yes', 'no'], required=False, default='no'
+    )
+parser.add_argument(
+    '-t', '--tables'
+    , choices=TABL_NAMES, default=TABL_NAMES, nargs='+'
+    , required=False
+    )
+args = parser.parse_args()
+tables = args.tables
+dummy_data = (args.data=='yes')
 
 db = SessionLocal()
+insp = sa.inspect(engine)
 
-if db.query(Song).count() == 0:
-    songs = [
-        Song(title='Smells Like Teen Spirit', artist='Nirvana', release_date=date(1991, 9, 10)),
-        Song(title='Here Comes The Sun', artist='The Beatles', release_date=date(1969, 8, 19)),
-        Song(title='Karma Police', artist='Radiohead', release_date=date(1997, 8, 25)),
-        Song(title='Get Lucky', artist='Daft Punk', release_date=date(2013, 4, 19)),
-    ]
+for name in tables:
+    # Create table if not existing
+    model = TABLES[name]['model']
+    if not insp.has_table(name):
+        model.__table__.create(engine)
+        msg = f'Create {name}.'
+    else:
+        msg = f'{name} already exists.'
 
-    for song in songs:
-        db.add(song)
+    # Adding data if table is empty 
+    if dummy_data:
+        data = TABLES[name]['data']
+        if db.query(model).count() == 0:
+            for row in data:
+                db.add(row)
 
-    db.commit()
+            db.commit()
+            msg += ' Add dummy data.'
+    print(msg)
