@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, select
+from sqlalchemy import select
 from datetime import datetime
 
 import models
@@ -38,13 +38,14 @@ def create_signal(signal: Signal, db: Session = Depends(get_db)):
     db_signal = models.LteSignal(
         ts = datetime.now()
         , pcellid = signal.pcellid
+        , scellid = signal.scellid
         , mcc = signal.mcc
         , mnc = signal.mnc
         , rsrq = signal.rsrq
         , rsrp = signal.rsrp
-        , frequency_band = signal.frequency_band
-        , dlbw = signal.dlbw
-        , ulbw = signal.ulbw
+        # , frequency_band = signal.frequency_band
+        # , dlbw = signal.dlbw
+        # , ulbw = signal.ulbw
     )
     db.add(db_signal)
     db.commit()
