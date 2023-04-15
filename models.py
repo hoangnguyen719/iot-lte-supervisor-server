@@ -10,7 +10,7 @@ class LteSignal(Base):
     scellid = Column(String(128), nullable=False)
     rsrq = Column(Integer, nullable=False)
     rsrp = Column(Integer, nullable=False)
-    rsrq_dbm = Column(Float, nullable=False)
+    rsrq_db = Column(Float, nullable=False)
     rsrp_dbm = Column(Float, nullable=False)
 
 

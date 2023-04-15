@@ -57,7 +57,7 @@ def append_signal(signal: schemas.Signal, db: Session, dt: datetime):
             , scellid = signal.scellid
             , rsrq = signal.rsrq
             , rsrp = signal.rsrp
-            , rsrq_dbm = rsrq_index2dbm(signal.rsrq)
+            , rsrq_db = rsrq_index2dbm(signal.rsrq)
             , rsrp_dbm = rsrp_index2dbm(signal.rsrp)
         )
         db.add(db_signal)
@@ -138,10 +138,10 @@ def get_1h_signals(
 
 def format_signals(signals, ts_format=lambda x: x.strftime('%H')):
     formated_results = {
-        'ts': [], 'rsrp_dbm': [], 'rsrq_dbm': []
+        'ts': [], 'rsrp_dbm': [], 'rsrq_db': []
     }
     for r in list(reversed([s["LteSignal"] for s in signals])):
         formated_results['ts'].append(ts_format(r.ts))
         formated_results['rsrp_dbm'].append(r.rsrp_dbm)
-        formated_results['rsrq_dbm'].append(r.rsrq_dbm )
+        formated_results['rsrq_db'].append(r.rsrq_db )
     return formated_results
