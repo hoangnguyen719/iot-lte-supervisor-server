@@ -24,8 +24,10 @@ class LteSignal(Base):
 class LteCell(Base):
     __tablename__ = 'lte_cells'
 
-    scellid = Column(String(128), primary_key=True, nullable=False)
+    id = Column(Integer, primary_key=True)
+    scellid = Column(String(128), nullable=False)
     pcellid = Column(String(128), nullable=False)
     mcc = Column(String(128), nullable=False)
     mnc = Column(String(128), nullable=False)
+    first_seen = Column(DateTime, nullable=False)
     last_seen = Column(DateTime, nullable=False)

@@ -32,6 +32,7 @@ TABLES = {
                 , scellid = 'scellid-abc'
                 , mcc = '0'
                 , mnc = '0'
+                , first_seen = datetime(2023,4,12,23,37,30) 
                 , last_seen = datetime(2023,4,12,23,37,30)
             )
         ]

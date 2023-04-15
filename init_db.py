@@ -26,7 +26,7 @@ for name in tables:
     model = TABLES[name]['model']
     if not insp.has_table(name):
         model.__table__.create(engine)
-        msg = f'Create {name}. '
+        msg = f'Create {name}.'
     else:
         msg = f'{name} already exists.'
 
@@ -38,5 +38,5 @@ for name in tables:
                 db.add(row)
 
             db.commit()
-            msg = name + ' Add dummy data.'
+            msg += ' Add dummy data.'
     print(msg)
