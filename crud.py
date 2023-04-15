@@ -43,6 +43,12 @@ def get_current_frequency(db: Session):
     if cur_freq: return cur_freq.frequency
     else: return None
 
+def rsrp_index2dbm(index):
+    return index - 140
+
+def rsrq_index2dbm(index):
+    return index/2 - 19.5
+
 def append_signal(signal: schemas.Signal, db: Session, dt: datetime):
     with db:
         # Append signal to table
@@ -51,8 +57,8 @@ def append_signal(signal: schemas.Signal, db: Session, dt: datetime):
             , scellid = signal.scellid
             , rsrq = signal.rsrq
             , rsrp = signal.rsrp
-            , rsrq_dbm = signal.rsrq/2 - 19.5
-            , rsrp_dbm = signal.rsrp - 140
+            , rsrq_dbm = rsrq_index2dbm(signal.rsrq)
+            , rsrp_dbm = rsrp_index2dbm(signal.rsrp)
         )
         db.add(db_signal)
         db.commit()

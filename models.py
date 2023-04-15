@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, DateTime
+from sqlalchemy import Column, Integer, String, Float, DateTime
 
 from database import Base
 
@@ -10,8 +10,8 @@ class LteSignal(Base):
     scellid = Column(String(128), nullable=False)
     rsrq = Column(Integer, nullable=False)
     rsrp = Column(Integer, nullable=False)
-    rsrq_dbm = Column(Integer, nullable=False)
-    rsrp_dbm = Column(Integer, nullable=False)
+    rsrq_dbm = Column(Float, nullable=False)
+    rsrp_dbm = Column(Float, nullable=False)
 
 
 class LteCell(Base):
