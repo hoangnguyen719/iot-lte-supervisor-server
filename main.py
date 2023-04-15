@@ -1,27 +1,15 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
 from datetime import datetime
 
 import models
 from database import engine, SessionLocal
 from models import Song, LteSignal
+from schemas import Signal
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
-class Signal(BaseModel):
-    ts = datetime.now()
-    pcellid: str
-    rsrq: int
-    rsrp: int
-    frequency_band: int
-    dlbw: int
-    ulbw: int
-
-    class Config:
-        orm_mode = True
 
 
 def get_db():
@@ -35,7 +23,6 @@ def get_db():
 @app.get('/')
 def read_root():
     return {'name': 'fastapi-songs'}
-
 
 @app.get('/songs/')
 def read_songs(db: Session = Depends(get_db)):
@@ -61,6 +48,14 @@ def create_signal(signal: Signal, db: Session = Depends(get_db)):
     db.refresh(db_signal)
     return db_signal
 
-@app.get('/get_last_signal/')
-def get_last_signal(signal: Signal):
-    return signal
+@app.get('/get_signals/')
+def get_signal(
+    pcellid: int | None = None
+    , signal_count: int = 1
+    , db: Session = Depends(get_db)
+    ):
+    query = (
+        db.query(LteSignal)
+        .order_by(desc(LteSignal.ts))
+        .limit(signal_count)
+    )
