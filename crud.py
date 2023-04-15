@@ -110,12 +110,12 @@ def update_current_frequency(freq: schemas.Frequency, db: Session, dt: datetime)
 def get_n_signals(
     db: Session
     , signal_count: int
-    , scellid: str | None = None
+    # , scellid: str | None = None
 ):
     with db:
         statement = select(models.LteSignal)
-        if scellid:
-            statement = statement.where(models.LteSignal.scellid == scellid)
+        # if scellid:
+        #     statement = statement.where(models.LteSignal.scellid == scellid)
         statement = statement.order_by(models.LteSignal.ts.desc()).limit(signal_count)
         results = db.execute(statement)
         results = results.all()
@@ -123,13 +123,13 @@ def get_n_signals(
 
 def get_1h_signals(
     db: Session
-    , scellid: str | None = None
+    # , scellid: str | None = None
 ):
     last_1hr = datetime.now() - timedelta(hours=1)
     with db:
         statement = select(models.LteSignal)
-        if scellid:
-            statement = statement.where(models.LteSignal.scellid == scellid)
+        # if scellid:
+        #     statement = statement.where(models.LteSignal.scellid == scellid)
         statement = statement.where(models.LteSignal.ts >= last_1hr)
         statement = statement.order_by(models.LteSignal.ts.desc())
         results = db.execute(statement)

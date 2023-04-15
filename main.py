@@ -56,18 +56,25 @@ def get_last_cell_change(db: Session = Depends(get_db)):
 
 @app.get('/get_n_signals/')
 def get_n_signals(
-    scellid: str | None = None
-    , signal_count: int = 10
+    signal_count: int = 10
     , db: Session = Depends(get_db)
+    # , scellid: str | None = None
 ):
-    return crud.get_n_signals(db=db, scellid=scellid, signal_count=signal_count)
+    return crud.get_n_signals(
+        db=db
+        # , scellid=scellid
+        , signal_count=signal_count
+    )
 
 @app.get('/get_1hr_signals/')
 def get_1hr_signals(
-    scellid: str | None = None
-    , db: Session = Depends(get_db)
+    db: Session = Depends(get_db)
+    # , scellid: str | None = None
 ):
-    return crud.get_1h_signals(db=db, scellid=scellid)
+    return crud.get_1h_signals(
+        db=db
+        # , scellid=scellid
+    )
 
 @app.post('/post_signal/')
 def post_signal(
