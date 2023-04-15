@@ -9,7 +9,7 @@ TABLES = {
         , 'data': [
             LteSignal(
                 ts = datetime(2023,4,12,23,37,30)
-                , scellid = 'scellid-abc'
+                , scellid = 'scellid'
                 , rsrq = 100
                 , rsrp = 100
                 , rsrq_db = (100/2)-19.5
@@ -21,8 +21,8 @@ TABLES = {
         'model': LteCell
         , 'data': [
             LteCell(
-                pcellid = 'pcellid-xyz'
-                , scellid = 'scellid-abc'
+                pcellid = 'pcellid'
+                , scellid = 'scellid'
                 , mcc = '0'
                 , mnc = '0'
                 , first_seen = datetime(2023,4,12,23,37,30) 
