@@ -11,10 +11,10 @@ def read_root():
 def read_songs(db: Session):
     return db.query(models.Song).all()
 
-def read_lte(db: Session):
+def read_all_lte_signals(db: Session):
     return db.query(models.LteSignal).all()
 
-def read_cell(db: Session):
+def read_all_cells(db: Session):
     return db.query(models.LteCell).all()
 
 def get_last_signal(db: Session):

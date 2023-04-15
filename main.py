@@ -28,11 +28,11 @@ def read_songs(db: Session = Depends(get_db)):
 
 @app.get('/lte/')
 def read_lte(db: Session = Depends(get_db)):
-    return crud.read_lte(db=db)
+    return crud.read_all_lte_signals(db=db)
 
 @app.get('/cell/')
 def read_cell(db: Session = Depends(get_db)):
-    return crud.read_cell(db=db)
+    return crud.read_all_cells(db=db)
 
 @app.post('/post_signal/')
 def post_signal(signal: Signal, db: Session = Depends(get_db)):
