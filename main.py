@@ -80,10 +80,11 @@ def get_1hr_signals(
 def post_signal(
     signal: Signal
     , db: Session = Depends(get_db)
-    , current_dt: datetime | None = None
+    # , current_dt: datetime | None = None
 ):
-    if current_dt is None:
-        current_dt = datetime.now()
+    # if current_dt is None:
+    #     current_dt = datetime.now()
+    current_dt = datetime.now()
     db_signal = crud.append_signal(signal, db, current_dt)
     db_cell = crud.update_cell(signal, db, current_dt)
     return db_signal, db_cell
@@ -92,8 +93,9 @@ def post_signal(
 def update_current_frequency(
     freq: Frequency = 2
     , db: Session = Depends(get_db)
-    , current_dt: datetime | None = None
+    # , current_dt: datetime | None = None
 ):
-    if current_dt is None:
-        current_dt = datetime.now()
+    # if current_dt is None:
+        # current_dt = datetime.now()
+    current_dt = datetime.now()
     return crud.update_current_frequency(freq=freq, db=db, dt=current_dt)
