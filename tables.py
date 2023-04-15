@@ -12,7 +12,7 @@ TABLES = {
                 , scellid = 'scellid-abc'
                 , rsrq = 100
                 , rsrp = 100
-                , rsrq_dbm = (100/2)-19.5
+                , rsrq_db = (100/2)-19.5
                 , rsrp_dbm = 100-140
             )
         ]

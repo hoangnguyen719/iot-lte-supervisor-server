@@ -57,7 +57,7 @@ def append_signal(signal: schemas.Signal, db: Session, dt: datetime):
             , scellid = signal.scellid
             , rsrq = signal.rsrq
             , rsrp = signal.rsrp
-            , rsrq_dbm = rsrq_index2dbm(signal.rsrq)
+            , rsrq_db = rsrq_index2dbm(signal.rsrq)
             , rsrp_dbm = rsrp_index2dbm(signal.rsrp)
         )
         db.add(db_signal)
@@ -110,12 +110,12 @@ def update_current_frequency(freq: schemas.Frequency, db: Session, dt: datetime)
 def get_n_signals(
     db: Session
     , signal_count: int
-    , scellid: str | None = None
+    # , scellid: str | None = None
 ):
     with db:
         statement = select(models.LteSignal)
-        if scellid:
-            statement = statement.where(models.LteSignal.scellid == scellid)
+        # if scellid:
+        #     statement = statement.where(models.LteSignal.scellid == scellid)
         statement = statement.order_by(models.LteSignal.ts.desc()).limit(signal_count)
         results = db.execute(statement)
         results = results.all()
@@ -123,13 +123,13 @@ def get_n_signals(
 
 def get_1h_signals(
     db: Session
-    , scellid: str | None = None
+    # , scellid: str | None = None
 ):
     last_1hr = datetime.now() - timedelta(hours=1)
     with db:
         statement = select(models.LteSignal)
-        if scellid:
-            statement = statement.where(models.LteSignal.scellid == scellid)
+        # if scellid:
+        #     statement = statement.where(models.LteSignal.scellid == scellid)
         statement = statement.where(models.LteSignal.ts >= last_1hr)
         statement = statement.order_by(models.LteSignal.ts.desc())
         results = db.execute(statement)
@@ -138,10 +138,10 @@ def get_1h_signals(
 
 def format_signals(signals, ts_format=lambda x: x.strftime('%H')):
     formated_results = {
-        'ts': [], 'rsrp_dbm': [], 'rsrq_dbm': []
+        'ts': [], 'rsrp_dbm': [], 'rsrq_db': []
     }
     for r in list(reversed([s["LteSignal"] for s in signals])):
         formated_results['ts'].append(ts_format(r.ts))
         formated_results['rsrp_dbm'].append(r.rsrp_dbm)
-        formated_results['rsrq_dbm'].append(r.rsrq_dbm )
+        formated_results['rsrq_db'].append(r.rsrq_db )
     return formated_results
