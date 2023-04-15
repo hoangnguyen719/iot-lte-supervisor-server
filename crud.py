@@ -30,8 +30,9 @@ def get_last_cell(db: Session):
         results = db.execute(statement)
         results = results.all()
     if len(results) > 0:
-        results = results[0]["LteCell"]
-    return results
+        return results[0]["LteCell"]
+    else:
+        return None
 
 def append_signal(signal: schemas.Signal, db: Session, dt: datetime):
     with db:

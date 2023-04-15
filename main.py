@@ -49,6 +49,14 @@ def get_last_signal(db: Session = Depends(get_db)):
 def get_last_cell(db: Session = Depends(get_db)):
     return crud.get_last_cell(db=db)
 
+@app.get('/get_last_cell_change/')
+def get_last_cell_change(db: Session = Depends(get_db)):
+    last_cell = crud.get_last_cell(db=db)
+    if last_cell:
+        return last_cell.first_seen
+    else:
+        return None
+
 @app.get('/get_signals/')
 def get_signals(
     scellid: str | None = None
