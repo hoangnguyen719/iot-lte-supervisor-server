@@ -12,14 +12,15 @@ if db.query(LteSignal).count() == 0:
     lte_signals = [
         LteSignal(
             ts = datetime(2023,4,12,23,37,30)
-            , pcellid = 'xya-ced13'
-            , mcc = 0
-            , mnc = 0
-            , rsrq = 10
-            , rsrp = -10
-            , frequency_band = 5
-            , dlbw = -999
-            , ulbw = 999
+            , pcellid = 'pcellid-xyz'
+            , scellid = 'scellid-abc'
+            , mcc = '0'
+            , mnc = '0'
+            , rsrq = '10'
+            , rsrp = '-10'
+            , frequency_band = '5'
+            , dlbw = '-999'
+            , ulbw = '999'
             )
     ]
 
