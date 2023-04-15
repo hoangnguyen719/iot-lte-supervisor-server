@@ -35,7 +35,7 @@ uvicorn main:app --reload
 ### `GET` last LTE signal
 /get_last_signal/
 
-### `GET` last `signal_count` LTE signal from S-Cell ID `scellid`
+### `GET` last `signal_count` LTE signals from S-Cell ID=`scellid`
 /get_last_signal/?scellid=`scellid`&signal_count=`scellid`
 
 ### `GET` all LTE cells' info
@@ -52,6 +52,19 @@ uvicorn main:app --reload
 
 ### `POST` Update signal
 /post_signal/<br>
+Request body (`required`)<br>
+
+```
+# Example value
+{
+  "pcellid": "string",
+  "scellid": "string",
+  "mcc": "string",
+  "mnc": "string",
+  "rsrq": 0,
+  "rsrp": 0
+}
+```
 
 ### `POST` Update frequency
 /update_current_frequency/<br>
