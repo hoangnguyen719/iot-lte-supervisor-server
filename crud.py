@@ -1,8 +1,9 @@
 from datetime import datetime
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy import select
 
-import models, schemas
+import models, schemas, database
 
 
 def read_root():
@@ -17,22 +18,26 @@ def read_all_lte_signals(db: Session):
 def read_all_cells(db: Session):
     return db.query(models.LteCell).all()
 
-def get_last_signal(db: Session):
+def get_last_value(db: Session, model: database.Base, sort_attr: InstrumentedAttribute):
     with db:
-        statement = select(models.LteSignal).order_by(models.LteSignal.ts.desc()).limit(1)
-        results = db.execute(statement)
-        results = results.all()
-    return results[0]["LteSignal"]
-
-def get_last_cell(db: Session):
-    with db:
-        statement = select(models.LteCell).order_by(models.LteCell.last_seen.desc()).limit(1)
+        statement = select(model).order_by(sort_attr.desc()).limit(1)
         results = db.execute(statement)
         results = results.all()
     if len(results) > 0:
-        return results[0]["LteCell"]
+        return results[0][model.__name__]
     else:
         return None
+
+def get_last_signal(db: Session):
+    return get_last_value(db=db, model=models.LteSignal, sort_attr=models.LteSignal.ts)
+
+def get_last_cell(db: Session):
+    return get_last_value(db=db, model=models.LteCell, sort_attr=models.LteCell.last_seen)
+
+def get_current_frequency(db: Session):
+    return get_last_value(
+        db=db, model=models.Frequency, sort_attr=models.CurrentFrequency.updated_at
+    )
 
 def append_signal(signal: schemas.Signal, db: Session, dt: datetime):
     with db:
@@ -70,6 +75,16 @@ def update_cell(signal: schemas.Signal, db: Session, dt: datetime):
         db.commit()
         db.refresh(last_cell)
     return last_cell
+
+def update_current_frequency(freq: schemas.Frequency, db: Session, dt: datetime):
+    with db:
+        # Get last cell
+        cur_freq = get_current_frequency(db)
+        # if cur_freq is None or cur_freq is different, update
+
+def update_frequency_history(frequency: schemas.Frequency, db: Session, dt: datetime):
+    # If new frequency is different from current frequency, update history of frequency
+    pass
 
 def get_signals(
     db: Session

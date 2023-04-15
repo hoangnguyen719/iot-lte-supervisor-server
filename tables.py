@@ -1,6 +1,6 @@
 from datetime import date, datetime
 
-from models import Song, LteSignal, LteCell
+from models import Song, LteSignal, LteCell, FrequencyHistory, CurrentFrequency
 
 # Example data
 TABLES = {
@@ -34,6 +34,24 @@ TABLES = {
                 , mnc = '0'
                 , first_seen = datetime(2023,4,12,23,37,30) 
                 , last_seen = datetime(2023,4,12,23,37,30)
+            )
+        ]
+    }
+    , 'frequency_history': {
+        'model': FrequencyHistory
+        , 'data': [
+            FrequencyHistory(
+                ts = datetime(2023,4,12,23,37,30)
+                , frequency = 2 # In seconds
+            )
+        ]
+    }
+    , 'current_frequency': {
+        'model': CurrentFrequency
+        , 'data': [
+            CurrentFrequency(
+                ts = datetime(2023,4,12,23,37,30)
+                , frequency = 2 # In seconds
             )
         ]
     }

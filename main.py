@@ -49,7 +49,12 @@ def get_last_signal(db: Session = Depends(get_db)):
 def get_last_cell(db: Session = Depends(get_db)):
     return crud.get_last_cell(db=db)
 
-@app.get('/get_last_cell_change/')
+@app.get('/get_current_frequency/')
+def get_last_frequency(db: Session = Depends(get_db)):
+    freq = crud.get_last_frequency(db=db)
+    return freq.frequency
+
+@app.get('/get_last_cell_change_timestamp/')
 def get_last_cell_change(db: Session = Depends(get_db)):
     last_cell = crud.get_last_cell(db=db)
     if last_cell:

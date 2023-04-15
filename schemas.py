@@ -13,3 +13,7 @@ class Signal(BaseModel):
 
     class Config:
         orm_mode = True
+
+class Frequency(BaseModel):
+    ts = datetime.now()
+    frequency: int

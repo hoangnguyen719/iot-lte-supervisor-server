@@ -31,3 +31,17 @@ class LteCell(Base):
     mnc = Column(String(128), nullable=False)
     first_seen = Column(DateTime, nullable=False)
     last_seen = Column(DateTime, nullable=False)
+
+
+class FrequencyHistory(Base):
+    __tablename__ = 'frequency_history'
+
+    id = Column(Integer, primary_key=True)
+    ts = Column(DateTime, nullable=False)
+    frequency = Column(Integer, nullable=False)  # In seconds
+
+class CurrentFrequency(Base):
+    __tablename__ = 'current_frequency'
+
+    updated_at = Column(DateTime, nullable=False)
+    frequency = Column(Integer, nullable=False)  # In seconds
