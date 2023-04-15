@@ -5,7 +5,7 @@ from datetime import datetime
 
 import models
 from database import engine, SessionLocal
-from models import Song, LteSignal
+from models import Song, LteSignal, LteCell
 from schemas import Signal
 
 models.Base.metadata.create_all(bind=engine)
@@ -33,35 +33,53 @@ def read_songs(db: Session = Depends(get_db)):
 def read_lte(db: Session = Depends(get_db)):
     return db.query(LteSignal).all()
 
+@app.get('/cell/')
+def read_lte(db: Session = Depends(get_db)):
+    return db.query(LteCell).all()
+
 @app.post('/post_signal/')
-def create_signal(signal: Signal, db: Session = Depends(get_db)):
-    db_signal = models.LteSignal(
-        ts = datetime.now()
-        , pcellid = signal.pcellid
-        , scellid = signal.scellid
-        , mcc = signal.mcc
-        , mnc = signal.mnc
-        , rsrq = signal.rsrq
-        , rsrp = signal.rsrp
-        # , frequency_band = signal.frequency_band
-        # , dlbw = signal.dlbw
-        # , ulbw = signal.ulbw
-    )
-    db.add(db_signal)
-    db.commit()
-    db.refresh(db_signal)
-    return db_signal
+def post_signal(signal: Signal, db: Session = Depends(get_db)):
+    current_dt = datetime.now()
+    with db:
+        # Add signal to table
+        db_signal = LteSignal(
+            ts = current_dt
+            , scellid = signal.scellid
+            , rsrq = signal.rsrq
+            , rsrp = signal.rsrp
+        )
+        db.add(db_signal)
+        db.commit()
+        db.refresh(db_signal)
+
+        # Update Cell table
+        db_cell = db.get(LteCell, signal.scellid)
+        if not db_cell:
+            db_cell = LteCell(
+                pcellid = signal.pcellid
+                , scellid = signal.scellid
+                , mcc = signal.mcc
+                , mnc = signal.mnc
+                , last_seen = current_dt
+            )
+        else:
+            setattr(db_cell, 'last_seen', current_dt)
+        db.add(db_cell)
+        db.commit()
+        db.refresh(db_cell)
+
+    return signal
 
 @app.get('/get_signals/')
 def get_signal(
-    pcellid: str | None = None
+    scellid: str | None = None
     , signal_count: int = 1
     , db: Session = Depends(get_db)
     ):
     with db:
         statement = select(LteSignal)
-        if pcellid:
-            statement = statement.where(LteSignal.pcellid == pcellid)
+        if scellid:
+            statement = statement.where(LteSignal.scellid == scellid)
         statement = statement.order_by(LteSignal.ts.desc()).limit(signal_count)
         results = db.execute(statement)
         results = results.all()

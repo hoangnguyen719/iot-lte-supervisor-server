@@ -16,12 +16,16 @@ class LteSignal(Base):
 
     id = Column(Integer, primary_key=True)
     ts = Column(DateTime, nullable=False)
-    pcellid = Column(String(128), nullable=False)
     scellid = Column(String(128), nullable=False)
-    mcc = Column(String(128), nullable=False)
-    mnc = Column(String(128), nullable=False)
     rsrq = Column(String(128), nullable=False)
     rsrp = Column(String(128), nullable=False)
-    # frequency_band = Column(String(128), nullable=True)
-    # dlbw = Column(String(128), nullable=True)
-    # ulbw = Column(String(128), nullable=True)
+
+
+class LteCell(Base):
+    __tablename__ = 'lte_cells'
+
+    scellid = Column(String(128), primary_key=True, nullable=False)
+    pcellid = Column(String(128), nullable=False)
+    mcc = Column(String(128), nullable=False)
+    mnc = Column(String(128), nullable=False)
+    last_seen = Column(DateTime, nullable=False)

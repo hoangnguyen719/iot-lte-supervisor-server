@@ -10,9 +10,6 @@ class Signal(BaseModel):
     mnc: str
     rsrq: int
     rsrp: int
-    # frequency_band: int
-    # dlbw: int
-    # ulbw: int
 
     class Config:
         orm_mode = True
