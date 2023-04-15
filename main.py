@@ -41,7 +41,7 @@ def read_lte(db: Session = Depends(get_db)):
 def post_signal(signal: Signal, db: Session = Depends(get_db)):
     current_dt = datetime.now()
     with db:
-        # Add signal to table
+        # Append signal to table
         db_signal = LteSignal(
             ts = current_dt
             , scellid = signal.scellid
