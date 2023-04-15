@@ -27,3 +27,31 @@ python3 init_db.py
 
 Run server:
 uvicorn main:app --reload
+
+# API Calls
+### `GET` all LTE signals
+/signals/
+
+### `GET` last LTE signal
+/get_last_signal/
+
+### `GET` last `signal_count` LTE signal from S-Cell ID `scellid`
+/get_last_signal/?scellid=`scellid`&signal_count=`scellid`
+
+### `GET` all LTE cells' info
+/cells/
+
+### `GET` most recent LTE cell's info
+/get_last_cell/
+
+### `GET` last LTE cell change's timestamp
+/get_last_cell_change_timestamp/
+
+### `GET` current frequency
+/get_current_frequency/
+
+### `POST` Update signal
+/post_signal/<br>
+
+### `POST` Update frequency
+/update_current_frequency/<br>

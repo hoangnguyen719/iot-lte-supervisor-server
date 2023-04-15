@@ -16,11 +16,11 @@ elif names == ['.']:
 # Drop tables by their names
 
 for name in names:
-    if name not in TABLES:
-        raise Exception(f'Table {name} not existing!')
-    else:
+    # if engine.dialect.has_table(engine, name):
+    if (insp.has_table(name)) & (name in TABLES):
         model = TABLES[name]['model']
-        # if engine.dialect.has_table(engine, name):
-        if insp.has_table(name):
-            print(name)
-            model.__table__.drop(engine)
+        print(name)
+        model.__table__.drop(engine)
+    else:
+        msg = f'Table {name} not existing!'
+        raise Exception(msg)

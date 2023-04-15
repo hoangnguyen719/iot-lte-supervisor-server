@@ -2,23 +2,14 @@ from sqlalchemy import Column, Integer, String, Date, DateTime
 
 from database import Base
 
-
-class Song(Base):
-    __tablename__ = 'songs'
-
-    id = Column(Integer, primary_key=True)
-    title = Column(String(128), nullable=False)
-    artist = Column(String(128), nullable=False)
-    release_date = Column(Date, nullable=False)
-
 class LteSignal(Base):
     __tablename__ = 'lte_signals'
 
     id = Column(Integer, primary_key=True)
     ts = Column(DateTime, nullable=False)
     scellid = Column(String(128), nullable=False)
-    rsrq = Column(String(128), nullable=False)
-    rsrp = Column(String(128), nullable=False)
+    rsrq = Column(Integer, nullable=False)
+    rsrp = Column(Integer, nullable=False)
 
 
 class LteCell(Base):
@@ -32,16 +23,8 @@ class LteCell(Base):
     first_seen = Column(DateTime, nullable=False)
     last_seen = Column(DateTime, nullable=False)
 
-
-class FrequencyHistory(Base):
-    __tablename__ = 'frequency_history'
-
-    id = Column(Integer, primary_key=True)
-    ts = Column(DateTime, nullable=False)
-    frequency = Column(Integer, nullable=False)  # In seconds
-
 class CurrentFrequency(Base):
     __tablename__ = 'current_frequency'
 
-    updated_at = Column(DateTime, nullable=False)
+    updated_at = Column(DateTime, nullable=False, primary_key=True)
     frequency = Column(Integer, nullable=False)  # In seconds

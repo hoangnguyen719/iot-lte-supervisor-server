@@ -1,22 +1,24 @@
-from datetime import datetime
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy import select
+from datetime import datetime
 
 import models, schemas, database
 
 
 def read_root():
-    return {'name': 'fastapi-songs'}
-
-def read_songs(db: Session):
-    return db.query(models.Song).all()
+    return {
+        'See API at': '/docs#/'
+    }
 
 def read_all_lte_signals(db: Session):
     return db.query(models.LteSignal).all()
 
 def read_all_cells(db: Session):
     return db.query(models.LteCell).all()
+
+def read_all_frequency(db: Session):
+    return db.query(models.CurrentFrequency).all()
 
 def get_last_value(db: Session, model: database.Base, sort_attr: InstrumentedAttribute):
     with db:
@@ -35,9 +37,11 @@ def get_last_cell(db: Session):
     return get_last_value(db=db, model=models.LteCell, sort_attr=models.LteCell.last_seen)
 
 def get_current_frequency(db: Session):
-    return get_last_value(
-        db=db, model=models.Frequency, sort_attr=models.CurrentFrequency.updated_at
+    cur_freq = get_last_value(
+        db=db, model=models.CurrentFrequency, sort_attr=models.CurrentFrequency.updated_at
     )
+    if cur_freq: return cur_freq.frequency
+    else: return None
 
 def append_signal(signal: schemas.Signal, db: Session, dt: datetime):
     with db:
@@ -59,16 +63,19 @@ def update_cell(signal: schemas.Signal, db: Session, dt: datetime):
     with db:
         # Get last cell
         last_cell = get_last_cell(db)
+        new_cell = models.LteCell(
+            pcellid = signal.pcellid
+            , scellid = signal.scellid
+            , mcc = signal.mcc
+            , mnc = signal.mnc
+            , first_seen = dt
+            , last_seen = dt
+        )
 
-        if (last_cell == []) | (last_cell.scellid != signal.scellid):
-            last_cell = models.LteCell(
-                pcellid = signal.pcellid
-                , scellid = signal.scellid
-                , mcc = signal.mcc
-                , mnc = signal.mnc
-                , first_seen = dt
-                , last_seen = dt
-            )
+        if last_cell is None:
+            last_cell = new_cell
+        elif last_cell.scellid != new_cell.scellid:
+            last_cell = new_cell
         else:
             setattr(last_cell, 'last_seen', dt)
         db.add(last_cell)
@@ -77,14 +84,19 @@ def update_cell(signal: schemas.Signal, db: Session, dt: datetime):
     return last_cell
 
 def update_current_frequency(freq: schemas.Frequency, db: Session, dt: datetime):
+    new_freq = freq.frequency
+    # truncate current_frequency
+    # append new data
     with db:
-        # Get last cell
-        cur_freq = get_current_frequency(db)
-        # if cur_freq is None or cur_freq is different, update
-
-def update_frequency_history(frequency: schemas.Frequency, db: Session, dt: datetime):
-    # If new frequency is different from current frequency, update history of frequency
-    pass
+        db.query(models.CurrentFrequency).delete()
+        new_freq = models.CurrentFrequency(
+            updated_at = dt
+            , frequency = freq.frequency
+        )
+        db.add(new_freq)
+        db.commit()
+        db.refresh(new_freq)
+    return new_freq
 
 def get_signals(
     db: Session
