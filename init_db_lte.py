@@ -13,6 +13,8 @@ if db.query(LteSignal).count() == 0:
         LteSignal(
             ts = datetime(2023,4,12,23,37,30)
             , pcellid = 'xya-ced13'
+            , mcc = 0
+            , mnc = 0
             , rsrq = 10
             , rsrp = -10
             , frequency_band = 5
