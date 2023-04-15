@@ -3,7 +3,9 @@ import sqlalchemy as sa
 
 from database import engine, SessionLocal
 from tables import TABLES, TABL_NAMES
+import models
 
+models.Base.metadata.create_all(bind=engine)
 # Get keyword argument
 parser = argparse.ArgumentParser(description="Initiate tables in the database.")
 parser.add_argument(
