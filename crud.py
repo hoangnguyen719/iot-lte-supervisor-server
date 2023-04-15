@@ -51,6 +51,8 @@ def append_signal(signal: schemas.Signal, db: Session, dt: datetime):
             , scellid = signal.scellid
             , rsrq = signal.rsrq
             , rsrp = signal.rsrp
+            , rsrq_dbm = signal.rsrq/2 - 19.5
+            , rsrp_dbm = signal.rsrp - 140
         )
         db.add(db_signal)
         db.commit()

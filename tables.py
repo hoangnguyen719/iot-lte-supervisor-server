@@ -10,8 +10,10 @@ TABLES = {
             LteSignal(
                 ts = datetime(2023,4,12,23,37,30)
                 , scellid = 'scellid-abc'
-                , rsrq = '10'
-                , rsrp = '-10'
+                , rsrq = 100
+                , rsrp = 100
+                , rsrq_dbm = (100/2)-19.5
+                , rsrp_dbm = 100-140
             )
         ]
     }
