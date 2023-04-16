@@ -99,3 +99,19 @@ def update_current_frequency(
         # current_dt = datetime.now()
     current_dt = datetime.now()
     return crud.update_current_frequency(freq=freq, db=db, dt=current_dt)
+
+@app.get('/get_cell_log/')
+def get_cell_log(
+    db: Session = Depends(get_db)
+):
+    cells = crud.read_all_cells(db=db)
+    cell_log = [
+        {
+            'id': c.id
+            , 'scellid': c.scellid
+            , 'first_seen': c.first_seen
+            , 'last_seen': c.last_seen
+        }
+        for c in cells
+    ]
+    return cell_log
