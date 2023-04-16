@@ -157,4 +157,5 @@ def format_signals(signals, ts_format=lambda x: x.strftime('%H')):
     return formated_results
 
 def ts_plus_7_hour(ts):
+    # To manually convert from UTC to ICT timezone
     return ts + timedelta(hours=7)
