@@ -22,5 +22,4 @@ for name in names:
         print(name)
         model.__table__.drop(engine)
     else:
-        msg = f'Table {name} not existing!'
-        raise Exception(msg)
+        print(f'Table {name} not existing - not doing anything!')
