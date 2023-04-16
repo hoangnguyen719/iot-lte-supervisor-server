@@ -31,10 +31,17 @@ def get_last_value(db: Session, model: database.Base, sort_attr: InstrumentedAtt
         return None
 
 def get_last_signal(db: Session):
-    return get_last_value(db=db, model=models.LteSignal, sort_attr=models.LteSignal.ts)
+    signal = get_last_value(db=db, model=models.LteSignal, sort_attr=models.LteSignal.ts)
+    if signal:
+        signal.ts = ts_plus_7_hour(signal.ts)
+    return signal
 
 def get_last_cell(db: Session):
-    return get_last_value(db=db, model=models.LteCell, sort_attr=models.LteCell.last_seen)
+    cell = get_last_value(db=db, model=models.LteCell, sort_attr=models.LteCell.last_seen)
+    if cell:
+        cell.first_seen = ts_plus_7_hour(cell.first_seen)
+        cell.last_seen = ts_plus_7_hour(cell.last_seen)
+    return cell
 
 def get_current_frequency(db: Session):
     cur_freq = get_last_value(
@@ -119,7 +126,7 @@ def get_n_signals(
         statement = statement.order_by(models.LteSignal.ts.desc()).limit(signal_count)
         results = db.execute(statement)
         results = results.all()
-    return format_signals(signals=results, ts_format=lambda x: x)
+    return format_signals(signals=results, ts_format=lambda x: ts_plus_7_hour(x))
 
 def get_1h_signals(
     db: Session
@@ -134,7 +141,10 @@ def get_1h_signals(
         statement = statement.order_by(models.LteSignal.ts.desc())
         results = db.execute(statement)
         results = results.all()
-    return format_signals(signals=results, ts_format=lambda x: x.strftime('%H:%M:%S'))
+    return format_signals(
+        signals=results
+        , ts_format=lambda x: ts_plus_7_hour(x).strftime('%H:%M:%S')
+    )
 
 def format_signals(signals, ts_format=lambda x: x.strftime('%H')):
     formated_results = {
@@ -145,3 +155,7 @@ def format_signals(signals, ts_format=lambda x: x.strftime('%H')):
         formated_results['rsrp_dbm'].append(r.rsrp_dbm)
         formated_results['rsrq_db'].append(r.rsrq_db )
     return formated_results
+
+def ts_plus_7_hour(ts):
+    # To manually convert from UTC to ICT timezone
+    return ts + timedelta(hours=7)
