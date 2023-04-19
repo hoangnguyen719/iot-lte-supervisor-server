@@ -1,6 +1,7 @@
 ## junctionx-hanoi-2023-iot-newbees
-
-Team NEWBEES' work for JunctionX Hanoi 2023 Hackathon
+This is a work for the [JunctionX Hanoi 2023 Hackathon](https://www.junctionxhanoi2023.com/).<br>
+- Team: **NEWBEES**<br>
+- Description: Server and database setup.
 
 ---------
 
