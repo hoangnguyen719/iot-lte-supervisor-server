@@ -2,20 +2,17 @@
 This is a part of the work for the [JunctionX Hanoi 2023 Hackathon](https://www.junctionxhanoi2023.com/).<br>
 - Team: **NEWBEES**<br>
 - Competition description: Within 48 hours, set up an IoT system to detect weak/loss of LTE 4G signal.
-- Submitted product: see system architecture in image below.<figure>
-  <img
-  src="images/system_architecture.jpeg"
-  alt="Entire System Architecture"
-  width=700>
-  <figcaption>
-    <a href="https://docs.google.com/presentation/d/1SUfOoXLpWCnfktmx_Bo7HddxW_Sc9susIa3Cdxdg0OA/edit?usp=sharing">
-      Team NEWBEES' Entire System Architecture
-    </a>
-  </figcaption>
+- Submitted product: see the entire system architecture in image below.<figure>
+  <a href="https://docs.google.com/presentation/d/1SUfOoXLpWCnfktmx_Bo7HddxW_Sc9susIa3Cdxdg0OA/edit?usp=sharing">
+    <img
+    src="images/system_architecture.jpeg"
+    alt="Entire System Architecture"
+    width=700>
+  </a>
 </figure>
 
 - Repo description: Set up server and database.
-- Product presentation
+- Final presentation
   - PowerPoint Slides: [link to Google Drive](https://docs.google.com/presentation/d/1bPi0vrQAUJJFnyKqWmuZRpBibypFUIaYIDAKa4smMN4/edit?usp=sharing)
   - Full presentation: [link to Facebook video](https://fb.watch/j-aidbyJQP/) (from **02:03:20** to **02:23:41**)
 
