@@ -1,21 +1,23 @@
 ## junctionx-hanoi-2023-iot-newbees
-This is a work for the [JunctionX Hanoi 2023 Hackathon](https://www.junctionxhanoi2023.com/).<br>
+This is a part of the work for the [JunctionX Hanoi 2023 Hackathon](https://www.junctionxhanoi2023.com/).<br>
 - Team: **NEWBEES**<br>
-- Repo description: Server and database setup.
-- Link to presentation
-  - PowerPoint Slides: [link to Google Drive](https://docs.google.com/presentation/d/1bPi0vrQAUJJFnyKqWmuZRpBibypFUIaYIDAKa4smMN4/edit?usp=sharing)
-  - Full presentation:
-
-<iframe src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2FJunctionVietnam%2Fvideos%2F2731682633641352%2F&show_text=false&width=560&t=7400" width="560" height="314" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
-
-
-<figure>
+- Competition description: Within 48 hours, set up an IoT system to detect weak/loss of LTE 4G signal.
+- Submitted product: see system architecture in image below.<figure>
   <img
   src="images/system_architecture.jpeg"
   alt="Entire System Architecture"
   width=700>
-  <figcaption>Entire System Architecture</figcaption>
+  <figcaption>
+    <a href="https://docs.google.com/presentation/d/1SUfOoXLpWCnfktmx_Bo7HddxW_Sc9susIa3Cdxdg0OA/edit?usp=sharing">
+      Team NEWBEES' Entire System Architecture
+    </a>
+  </figcaption>
 </figure>
+
+- Repo description: Set up server and database.
+- Product presentation
+  - PowerPoint Slides: [link to Google Drive](https://docs.google.com/presentation/d/1bPi0vrQAUJJFnyKqWmuZRpBibypFUIaYIDAKa4smMN4/edit?usp=sharing)
+  - Full presentation: [link to Facebook video](https://fb.watch/j-aidbyJQP/) (from **02:03:20** to **02:23:41**)
 
 ---------
 
