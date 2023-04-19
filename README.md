@@ -12,6 +12,7 @@ This is a part of the work for the [JunctionX Hanoi 2023 Hackathon](https://www.
 </figure>
 
 - Repo description: Set up server and database.
+  - Client repo: [link to GitHub Repo](https://github.com/hoangnguyen719/iot-lte-supervisor-server)
 - Final presentation
   - PowerPoint Slides: [link to Google Drive](https://docs.google.com/presentation/d/1bPi0vrQAUJJFnyKqWmuZRpBibypFUIaYIDAKa4smMN4/edit?usp=sharing)
   - Full presentation: [link to Facebook video](https://fb.watch/j-aidbyJQP/) (from **02:03:20** to **02:23:41**)
